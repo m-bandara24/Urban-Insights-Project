@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Data Analysis Dashboard - Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="./index.html">
+            <img src="./images/logo.jpg" alt="Crime Data Dashboard Logo" class="logo">
+        </a>
+        <h1>
+            <a href="./index.html">Crime Data Dashboard</a>
+        </h1>
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about.html">About Us</a></li>
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./login.html">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Sign Up Section -->
+    <section class="login">
+        <h2>Sign Up</h2>
+        <form onsubmit="signUp(event)">
+            <label for="email">Email</label>
+            <input type="email" id="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" required>
+
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" required>
+
+            <button type="submit">Sign Up</button>
+        </form>
+        <p class="mt-1">Already have an account? <a href="./login.html">Login here</a>.</p>
+    </section>
+</body>
+<script src="./index.js"></script>
+
+
+</html>

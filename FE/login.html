@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Data Analysis Dashboard - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="./index.html">
+            <img src="./images/logo.jpg" alt="Crime Data Dashboard Logo" class="logo">
+        </a>
+        <h1>
+            <a href="./index.html">Crime Data Dashboard</a>
+        </h1>
+        <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./about.html">About Us</a></li>
+            <li><a href="./contact.html">Contact Us</a></li>
+            <li><a href="./login.html">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Login Section -->
+    <section class="login">
+        <h2>Login / Sign up</h2>
+        <form onsubmit="login(event)">
+            <label for="username">Email</label>
+            <input type="text" id="username" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" required>
+            <button type="submit">Login</button>
+            <div class="flex justify-between">
+                <p><a href="./forgotpassword.html">Forgot password?</a></p>
+                <p><a href="./signup.html">Sign Up</a></p>
+            </div>
+        </form>
+    </section>
+</body>
+<script src="./index.js"></script>
+
+</html>
