@@ -1,0 +1,112 @@
+/* All pages CSS */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    background-color: #0056b3;
+}
+
+.navbar-brand,
+.navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+
+.language-selector {
+    margin-top: 20px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #2ca94b !important;
+}
+
+.breadcrumb {
+    background-color: #ced5db;
+}
+
+.container {
+    margin-top: 20px;
+}
+
+.navbar a {
+    font-size: 15px;
+}
+
+.language-selector {
+    padding-left: 50px;
+}
+
+h2.display-4 {
+    color: #007bff;
+}
+
+
+/* Index page specific CSS */
+
+.mycontainer {
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    padding: 30px;
+}
+
+.mycontainer .col-md-8 {
+    text-align: justify;
+}
+
+/* Booking page specific CSS */
+
+.outer-container {
+    padding: 20px;
+    background-image:url('images/booking-background.png');
+background-image: -ms-linear-gradient(rgba(0, 0, 0, 0.8), rgba(110, 108, 108, 0.8)), url('images/booking-background.png');
+
+}
+
+.outer-container h2 {
+    color: #fff;
+}
+
+
+.form-container {
+    background-color: rgba(5, 48, 94, 0.7);
+    /* background-color: rgba(0, 0, 0, 0.8); */
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.form-container h4 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Footer CSS */
+
+.footer {
+    background-color: #0275d8;
+    color: white;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.footer a {
+    color: white;
+}
+
+.footer a:hover {
+    color: #ff6600;
+}
+
+.btn-primary {
+    background-color: #ff6600;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e65c00;
+}
