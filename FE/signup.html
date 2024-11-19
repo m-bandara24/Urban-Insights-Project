@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style-new.css">
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/form-style.css" />
 
 </head>
 
@@ -48,8 +50,96 @@
         </ul>
     </nav>
 
+    <!-- new registration -->
+	<div class="limiter">
+		<div class="container-login200" style="background-image: url('./images/bg_1.jpg');">
+			<div class="container p-t-30 p-b-50">
+				<br /><br /><span class="login100-form-title p-b-41">
+					USER REGISTRATION
+				</span>
+				<!-- Form -->
+				<div class="outer-container">
+					<div class="container mt-5 form-container">
+
+						<form id="register-form" action="/register" method="post">
+
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="firstName">First Name</label>
+									<input type="text" class="form-control" id="firstName" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="lastName">Last Name</label>
+									<input type="text" class="form-control" id="lastName" required>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="phoneNumber">Phone Number</label>
+									<input type="tel" class="form-control" id="phoneNumber" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="email">Email</label>
+									<input type="email" class="form-control" id="email">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="address">Address</label>
+									<input type="text" class="form-control" id="address">
+								</div>
+								<div class="form-group col-md-6">
+									<label for="city">City</label>
+									<input type="text" class="form-control" id="city">
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="policeDivision">Police Division Number</label>
+									<input type="text" class="form-control" id="policeDivision" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="userid">User ID</label>
+									<input type="text" class="form-control" id="userid" required>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group col-md-6">
+									<label for="password">Password</label>
+									<input type="password" class="form-control" id="password" placeholder="Password" required>
+								</div>
+								<div class="form-group col-md-6">
+									<label for="confirmpassword">Confirm Password</label>
+									<input type="password" class="form-control" id="confirmpassword"
+										placeholder="Password" required>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="form-check flex justify-between">
+									<input class="form-check-input" type="checkbox" id="gridCheck">
+									<label class="form-check-label" for="gridCheck">
+										I agree with the Terms and Conditions of Urban Insights
+									</label>
+								</div>
+							</div>
+							<div class="container-login100-form-btn m-t-32">
+								<button class="login100-form-btn" type="submit">
+									Register
+								</button>
+							</div>
+						</form>
+                        <div class="forgotPass">
+                            <p class="mt-1">Already have an account? <a href="./login.html">Login here</a>.</p>
+                        </div>
+                        
+					</div>
+
+				</div>
+    <!-- new reg end -->
+
     <!-- Sign Up Section -->
-    <section class="login">
+    <!-- <section class="login">
         <h2>Sign Up</h2>
         <form onsubmit="signUp(event)">
             <label for="email">Email</label>
@@ -64,7 +154,7 @@
             <button type="submit">Sign Up</button>
         </form>
         <p class="mt-1">Already have an account? <a href="./login.html">Login here</a>.</p>
-    </section>
+    </section> -->
 </body>
 <script src="js/index.js"></script>
 

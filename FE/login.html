@@ -11,23 +11,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&display=swap"
-      rel="stylesheet">
-  
+        rel="stylesheet">
+
     <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
     <link rel="stylesheet" href="css/animate.css">
-  
+
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/magnific-popup.css">
-  
+
     <link rel="stylesheet" href="css/aos.css">
-  
+
     <link rel="stylesheet" href="css/ionicons.min.css">
-  
+
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style-new.css">
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/main.css" />
 
 </head>
 
@@ -47,9 +48,46 @@
             <li><a href="./login.html">Login</a></li>
         </ul>
     </nav>
+    <!-- login section start -->
+    <div class="limiter">
+        <div class="container-login100" style="background-image: url('./images/bg_1.jpg');">
+            <div class="wrap-login100 p-t-30 p-b-50">
+                <br /><br /><span class="login100-form-title p-b-41">
+                    Member Login
+                </span>
+                <div class="outer-container">
+                    <div class="container mt-5 form-container">
+                        <form id="login-form" onsubmit="login(event)">
+                            <!-- class="login100-form validate-form p-b-33 p-t-5" -->
+                            <div class="form-group login-sec">
+                                <label for="username">Email address</label>
+                                <input type="email" class="form-control" id="username" aria-describedby="emailHelp"
+                                    placeholder="Enter email" required>
+                            </div>
+                            <div class="form-group login-sec">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" id="password" placeholder="Password"
+                                    required>
+                            </div>
+                            <div class="container-login100-form-btn m-t-32">
+                                <button class="login100-form-btn" type="submit">
+                                    Login
+                                </button>
+                            </div>
+                            <div class="flex justify-between forgotPass">
+                                <p><a href="./forgotpassword.html">Forgot password?</a></p>
+                                <p><a href="./signup.html">Sign Up</a></p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- login section -->
 
     <!-- Login Section -->
-    <section class="login">
+    <!-- <section class="login">
         <h2>Login / Sign up</h2>
         <form onsubmit="login(event)">
             <label for="username">Email</label>
@@ -62,7 +100,7 @@
                 <p><a href="./signup.html">Sign Up</a></p>
             </div>
         </form>
-    </section>
+    </section> -->
 </body>
 <script src="js/index.js"></script>
 
