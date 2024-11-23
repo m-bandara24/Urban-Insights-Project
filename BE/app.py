@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify,render_template, request
 from flask_cors import CORS
-import mysql.connector
-from mysql.connector import Error
+import pyodbc
 from config import db_config
 import bcrypt
 import jwt
@@ -26,14 +25,24 @@ app.config['MAIL_PASSWORD'] = '78f93eb49d73b5'
 
 mail = Mail(app)
 
-# Connect to MySQL
+# MSSQL DB Connection
 def get_db_connection():
     try:
-        conn = mysql.connector.connect(**db_config)
+        conn = pyodbc.connect(
+            f"DRIVER={db_config['driver']};"
+            f"SERVER={db_config['server']};"
+            f"DATABASE={db_config['database']};"
+            f"Trusted_Connection={db_config['trusted_connection']};"
+            f"TrustServerCertificate={db_config['trust_server_certificate']};"
+        )
         return conn
-    except Error as e:
-        print("Error connecting to MySQL:", e)
+    except pyodbc.Error as e:
+        print("Error connecting to MSSQL:", e)
         return None
+
+def hash_password(password):
+    import hashlib
+    return hashlib.sha256(password.encode()).hexdigest()
 
 # Sign Up Route
 @app.route('/api/signup', methods=['POST'])
@@ -44,25 +53,35 @@ def sign_up():
 
     if not email or not password:
         return jsonify({'message': 'All fields are required'}), 400
-
+    
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
     conn = get_db_connection()
-    cursor = conn.cursor()
-
+    if not conn:
+        return jsonify({'message': 'Database connection error'}), 500
+    
     try:
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        cursor = conn.cursor()
+        
+        # Check if the email already exists
+        cursor.execute("SELECT 1 FROM users WHERE email = ?", (email,))
         if cursor.fetchone():
             return jsonify({'message': 'Email already exists'}), 409
 
-        cursor.execute("INSERT INTO users (email, password) VALUES (%s, %s)", (email, hashed_password))
+        # Insert the new user
+        # TODO: insert all other fields in the database
+        cursor.execute("INSERT INTO users (email, password) VALUES (?, ?)", (email, hashed_password.decode('utf-8')))
         conn.commit()
+
         return jsonify({'message': 'User registered successfully'}), 201
-    except Error as e:
+
+    except pyodbc.Error as e:
         print("Database error:", e)
         return jsonify({'message': 'Internal server error'}), 500
+
     finally:
-        cursor.close()
+        if 'cursor' in locals():
+            cursor.close()
         conn.close()
 
 # Sign In Route
@@ -72,27 +91,42 @@ def login():
     email = data.get('email')
     password = data.get('password')
 
+    # Validate input
     if not email or not password:
-        return jsonify({'message': 'Both email and password are required'}), 400
+        return jsonify({'message': 'Email and password are required'}), 400
 
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    if not conn:
+        return jsonify({'message': 'Database connection error'}), 500
 
     try:
-        cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        cursor = conn.cursor()
+
+        # Fetch user by email
+        cursor.execute("SELECT id, password FROM users WHERE email = ?", (email,))
         user = cursor.fetchone()
 
-        if user and bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+        if user and bcrypt.checkpw(password.encode('utf-8'), user[1].encode('utf-8')):
+            # Generate JWT token
             token = jwt.encode(
-                {'user_id': user['id'], 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)},
+                {
+                    'user_id': user[0],
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+                },
                 app.config['SECRET_KEY'],
                 algorithm="HS256"
             )
             return jsonify({'message': 'Login successful', 'token': token}), 200
         else:
             return jsonify({'message': 'Invalid credentials'}), 401
+
+    except pyodbc.Error as e:
+        print("Database error:", e)
+        return jsonify({'message': 'Internal server error'}), 500
+
     finally:
-        cursor.close()
+        if 'cursor' in locals():
+            cursor.close()
         conn.close()
 
 # forget password - verify email, send email with a code
@@ -103,24 +137,25 @@ def send_reset_email():
     email = data.get('email')
 
     # Verify email exists in the database
-    # conn = sqlite3.connect('users.db') 
-    # cursor = conn.cursor()
-    # cursor.execute("SELECT * FROM user WHERE email=?", (email,))
-    # user = cursor.fetchone()
-    # conn.close()
-
-    # if not user:
-    #     return jsonify({"message": "Email not found!"}), 404
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT UserID FROM Users WHERE Email = ?", (email,))
+    
+    user = cursor.fetchone()
+    if not user:
+        conn.close()
+        return jsonify({"message": "Email not found!"}), 404
 
     # Generate reset token (random code for simplicity)
     reset_token = random.randint(100000, 999999)
-
-    # Save the reset token in the database
-    # conn = sqlite3.connect('users.db') 
-    # cursor = conn.cursor()
-    # cursor.execute("UPDATE user SET reset_token=? WHERE email=?", (reset_token, email))
-    # conn.commit()
-    # conn.close()
+    
+    # Update user with token
+    cursor.execute(
+        "UPDATE User SET ResetToken = ? WHERE Email = ?",
+        (reset_token, email)
+    )
+    conn.commit()
+    conn.close()
 
     # Send email
     try:
@@ -140,7 +175,7 @@ def reset_password():
     new_password = data.get('new_password')
 
     # Verify the reset token
-    conn = connect_db()
+    conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM users WHERE email=? AND reset_token=?", (email, reset_token))
     user = cursor.fetchone()
@@ -150,21 +185,26 @@ def reset_password():
         return jsonify({"message": "Invalid token or email!"}), 400
 
     # Update the password
-    cursor.execute("UPDATE users SET password=?, reset_token=NULL WHERE email=?", (new_password, email))
+    hashed_password = hash_password(new_password)  # Function to hash the password
+    cursor.execute(
+        "UPDATE Users SET Password = ?, ResetToken = NULL, TokenExpiration = NULL WHERE Email = ?",
+        (hashed_password, email)
+    )
     conn.commit()
     conn.close()
 
     return jsonify({"message": "Password reset successfully!"}), 200
 
 # FOrgot password web page
-@app.route('/forget')
-def forget():
-    return render_template('forgotpassword.html')
+# @app.route('/forget')
+# def forget():
+#     return render_template('forgotpassword.html')
 
-# Reset_password web page
-@app.route('/reset')
-def reset():
-    return render_template('reset_password.html')
+# # Reset_password web page
+# @app.route('/reset')
+# def reset():
+#     return render_template('reset_password.html')
+
 
 
 # Token Validation Route
