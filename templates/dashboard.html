@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Insights - Dashboard</title>
+    <link rel="icon" type="image/png" href="static/images/icons/ui_icon.ico" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/style.css">
+
+    <script src="static/js/index.js"></script>
+
+    <!-- Add Tableau's JavaScript API -->
+
+    <!-- <script src="https://public.tableau.com/javascripts/api/tableau-2.8.0.min.js"></script> -->
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav>
+        <a href="{{ url_for('home') }}">
+            <img src="static/images/logo.jpg" alt="Crime Data Dashboard Logo" class="logo">
+        </a>
+        <h1>
+            <a href="{{ url_for('home') }}">Crime Data Dashboard</a>
+        </h1>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About Us</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+            <li><a href="{{ url_for('login_m') }}">Login</a></li>
+        </ul>
+    </nav>
+
+
+    <section class="dashboardContainer" id="dashboard">
+        <h2>Welcome to the Crime Data Analysis Dashboard</h2>
+        <div id="isVisible">
+        <div class='tableauPlaceholder' id='viz1732592139974' style='position: relative'>
+            <noscript><a href='#'><img alt='Toronto Crimes Analysis Dashboard ' 
+                src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Cr&#47;CrimesAnalysisDashboards_17321614926280&#47;TorontoCrimesAnalysisDashboard2&#47;1_rss.png'
+                style='border: none' /></a>
+            </noscript>
+            <object class='tableauViz'  style='display:none;'>
+            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+            <param name='embed_code_version' value='3' /> <param name='site_root' value='' />
+            <param name='name' value='CrimesAnalysisDashboards_17321614926280&#47;TorontoCrimesAnalysisDashboard2' />
+            <param name='tabs' value='no' />
+            <param name='toolbar' value='yes' />
+            <param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Cr&#47;CrimesAnalysisDashboards_17321614926280&#47;TorontoCrimesAnalysisDashboard2&#47;1.png' /> 
+            <param name='animate_transition' value='yes' />
+            <param name='display_static_image' value='yes' />
+            <param name='display_spinner' value='yes' />
+            <param name='display_overlay' value='yes' />
+            <param name='display_count' value='yes' />
+            <param name='language' value='en-US' />
+        </object>
+    </div>  
+    </section>
+
+
+</body>
+
+</html>

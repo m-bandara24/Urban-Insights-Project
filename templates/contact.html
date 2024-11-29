@@ -15,21 +15,21 @@
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&display=swap"
     rel="stylesheet">
 
-  <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-  <link rel="stylesheet" href="css/animate.css">
+  <link rel="stylesheet" href="static/css/open-iconic-bootstrap.min.css">
+  <link rel="stylesheet" href="static/css/animate.css">
 
-  <link rel="stylesheet" href="css/owl.carousel.min.css">
-  <link rel="stylesheet" href="css/owl.theme.default.min.css">
-  <link rel="stylesheet" href="css/magnific-popup.css">
+  <link rel="stylesheet" href="static/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="static/css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="static/css/magnific-popup.css">
 
-  <link rel="stylesheet" href="css/aos.css">
+  <link rel="stylesheet" href="static/css/aos.css">
 
-  <link rel="stylesheet" href="css/ionicons.min.css">
+  <link rel="stylesheet" href="static/css/ionicons.min.css">
 
-  <link rel="stylesheet" href="css/flaticon.css">
-  <link rel="stylesheet" href="css/icomoon.css">
-  <link rel="stylesheet" href="css/style-new.css">
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="static/css/flaticon.css">
+  <link rel="stylesheet" href="static/css/icomoon.css">
+  <link rel="stylesheet" href="static/css/style-new.css">
+  <link rel="stylesheet" href="static/css/style.css" />
 
 </head>
 <style>
@@ -188,17 +188,17 @@
 <body>
   <!-- Navbar -->
   <nav class="ui-nav">
-    <a href="./index.html">
-      <img src="./images/logo.jpg" alt="Crime Data Dashboard Logo" class="logo">
+    <a href="{{ url_for('home') }}">
+      <img src="static//images/logo.jpg" alt="Crime Data Dashboard Logo" class="logo">
     </a>
     <h2>
-      <a href="./index.html">Urban Insights</a>
+      <a href="{{ url_for('home') }}">Urban Insights</a>
     </h2>
     <ul>
-      <li><a href="./index.html">Home</a></li>
-      <li><a href="./about.html">About Us</a></li>
-      <li><a href="./contact.html">Contact Us</a></li>
-      <li><a href="./login.html">Login</a></li>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('about') }}">About Us</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact Us</a></li>
+      <li><a href="{{ url_for('login_m') }}">Login</a></li>
     </ul>
   </nav>
 
@@ -317,6 +317,6 @@
   <!-- end footer -->
 
 </body>
-<script src="js/index.js"></script>
+<script src="static/js/index.js"></script>
 
 </html>

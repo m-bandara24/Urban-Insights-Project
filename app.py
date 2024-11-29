@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify,render_template, request
+from flask import Flask, redirect, request, jsonify,render_template, request, session, url_for
 from flask_cors import CORS
 import pyodbc
 from config import db_config
@@ -45,11 +45,20 @@ def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 # Sign Up Route
-@app.route('/api/signup', methods=['POST'])
-def sign_up():
+@app.route('/signup', methods=['GET','POST'])
+def signup():
+ if request.method == 'POST':
     data = request.json
     email = data.get('email')
     password = data.get('password')
+    password = data.get('password')
+    firstName = data.get('firstName')
+    lastName = data.get('lastName')
+    phoneNumber = data.get('phoneNumber')
+    address = data.get('address')
+    city = data.get('city')
+    policeDivision = data.get('policeDivision')
+    userid = data.get('userid')
 
     if not email or not password:
         return jsonify({'message': 'All fields are required'}), 400
@@ -70,7 +79,7 @@ def sign_up():
 
         # Insert the new user
         # TODO: insert all other fields in the database
-        cursor.execute("INSERT INTO users (email, password) VALUES (?, ?)", (email, hashed_password.decode('utf-8')))
+        cursor.execute("INSERT INTO users (email, password, firstName,lastName,phoneNumber,address,city,policeDivision,userid) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (email, hashed_password.decode('utf-8'),firstName,lastName,phoneNumber,address,city,policeDivision,userid))
         conn.commit()
 
         return jsonify({'message': 'User registered successfully'}), 201
@@ -83,6 +92,7 @@ def sign_up():
         if 'cursor' in locals():
             cursor.close()
         conn.close()
+ return render_template('signup.html')
 
 # Sign In Route
 @app.route('/api/login', methods=['POST'])
@@ -222,6 +232,70 @@ def validate_token():
         return jsonify({'success':'false','message': 'Token has expired'}), 401
     except jwt.InvalidTokenError:
         return jsonify({'success':'false','message': 'Invalid token'}), 401
+    
+@app.route('/login_m', methods=['GET', 'POST'])
+def login_m():
+    print(request.method)
+    if request.method == 'POST':
+        data = request.json
+        email = data.get('email')
+        password = data.get('password')
+        # Validate input
+        if not email or not password:
+            return jsonify({'message': 'Email and password are required'}), 400
+
+        conn = get_db_connection()
+        if not conn:
+            return jsonify({'message': 'Database connection error'}), 500
+
+        try:
+            cursor = conn.cursor()
+
+            # Fetch user by email
+            cursor.execute("SELECT id, password FROM users WHERE email = ?", (email,))
+            user = cursor.fetchone()
+
+            if user and bcrypt.checkpw(password.encode('utf-8'), user[1].encode('utf-8')):
+                # Generate JWT token
+                token = jwt.encode(
+                    {
+                        'user_id': user[0],
+                        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+                    },
+                    app.config['SECRET_KEY'],
+                    algorithm="HS256"
+                )
+                return jsonify({'message': 'Login successful', 'token': token}), 200
+            else:
+                return jsonify({'message': 'Invalid credentials'}), 401
+
+        except pyodbc.Error as e:
+            print("Database error:", e)
+            return jsonify({'message': 'Internal server error'}), 500
+
+        finally:
+            if 'cursor' in locals():
+                cursor.close()
+            conn.close()
+    
+    return render_template('login.html')
+
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+    
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
 
 # Run the application
 if __name__ == '__main__':

@@ -5,10 +5,20 @@ window.onload = function () {
 
 
 async function signUp(event) {
+    console.log('Inside js');
     event.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirm-password').value;
+    const confirmPassword = document.getElementById('confirmpassword').value;
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const phoneNumber = document.getElementById('phoneNumber').value;
+    const address = document.getElementById('address').value;
+    const city = document.getElementById('city').value;
+    const policeDivision = document.getElementById('policeDivision').value;
+    const userid = document.getElementById('userid').value;
+    console.log("Sending data:", { email, password, firstName, lastName, phoneNumber, address, city, policeDivision, userid });
+
 
     if (password !== confirmPassword) {
         alert('Passwords do not match.');
@@ -16,19 +26,19 @@ async function signUp(event) {
     }
 
     try {
-        const response = await fetch(`${backendURL}/api/signup`, {
+        const response = await fetch(`${backendURL}/signup`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+    body: JSON.stringify({ email, password, firstName,lastName,phoneNumber,address, city,policeDivision,userid})
         });
 
         const result = await response.json();
 
         if (response.ok) {
             alert('Sign Up successful! Please log in.');
-            window.location.href = 'login.html';
+            window.location.href = '/login_m';
         } else {
             alert(`Sign Up failed: ${result.message}`);
         }
@@ -44,18 +54,17 @@ async function login(event) {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch(`${backendURL}/api/login`, {
+        const response = await fetch(`${backendURL}/login_m`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email: username, password })
+            body: JSON.stringify({ email: username, password }),
         });
-
         const result = await response.json();
         if (response.ok) {
             localStorage.setItem('token', result.token)
-            window.location.href = './dashboard.html';
+            window.location.href = '/dashboard';
         } else {
             alert(`Login failed: ${result.message}`);
         }
@@ -72,18 +81,18 @@ function logout() {
 
 function checkCredentials() {
     const iframe = document.getElementById('isVisible');
-    if (window.location.pathname.includes('dashboard.html') || window.location.pathname.includes('Dashboard.html')) {
+    if (window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/Dashboard')) {
         if (localStorage.getItem('token')) {
             validatingToken()
         } else {
             iframe.style.display = 'none';
             alert("Please login to continue...");
-            window.location.href = './index.html';
+            window.location.href = '/login_m';
         }
     }
 
 
-    if (window.location.pathname.includes('login.html') || window.location.pathname.includes('Login.html')) {
+    if (window.location.pathname.includes('/login_m') || window.location.pathname.includes('/Login_m')) {
         logout()
     }
 
@@ -106,12 +115,12 @@ async function validatingToken() {
         if (result.success === 'false') {
             iframe.style.display = 'none';
             logout();
-            window.location.href = './login.html';
+            window.location.href = '/login_m';
             alert(`${result.message}`);
         } else {
-            const tableauUrl = "https://public.tableau.com/views/TorontoCrimesAnalysis/TorontoCrimesAnalysisDashboard";
+            const tableauUrl = "https://public.tableau.com/app/profile/bimsari.lekamge/viz/CrimesAnalysisDashboards_17321614926280/TorontoCrimesAnalysisDashboard2";
             iframe.style.display = 'block';
-            var divElement = document.getElementById('viz1731023434304');
+            var divElement = document.getElementById('viz1732592139974');
             var vizElement = divElement.getElementsByTagName('object')[0];
             if (divElement.offsetWidth > 800) {
                 vizElement.style.width = '1320px';
@@ -130,7 +139,7 @@ async function validatingToken() {
     } catch (error) {
         logout();
         iframe.style.display = 'none';
-        window.location.href = './login.html';
+        window.location.href = '/login_m';
         alert('An error occurred. Please try again.');
     }
 }
